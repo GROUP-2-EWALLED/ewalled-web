@@ -17,6 +17,9 @@ function Nav() {
         <Link to="/" className="nav-link">
           Dashboard
         </Link>
+        <Link to="/financialoverview" className="nav-link">
+          Financial Overview
+        </Link>
         <Link to="/transfer" className="nav-link">
           Transfer
         </Link>
