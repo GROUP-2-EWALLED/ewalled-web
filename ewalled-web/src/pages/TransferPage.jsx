@@ -1,11 +1,20 @@
 import Nav from "../components/Nav";
 import "../styles/TransferPage.css";
-import DropdownInput from "../components/DropdownInput";
 import AmountInput from "../components/AmountInput";
 import NoteInput from "../components/NoteInput";
 import PrimaryButton from "../components/PrimaryButton";
+import searchIcon from "../assets/search.png";
+
+import { useState } from "react";
 
 function TransferPage() {
+  const [accountNumber, setAccountNumber] = useState("");
+  
+  const handleSearch = () => {
+    console.log("Mencari akun:", accountNumber);
+    // Tambahkan logika validasi akun di sini
+  };
+
   return (
     <>
       <Nav />
@@ -13,16 +22,24 @@ function TransferPage() {
         <div className="transfer-container">
           <h1 className="transfer-heading">Transfer</h1>
           <div className="transfer-card">
-            <DropdownInput
-              label="To"
-              options={[
-                "900782139 (Giz)",
-                "901239456 (Aditya)",
-                "908765432 (Sendy)",
-              ]}
-              defaultValue="900782139 (Giz)"
-              onChange={(value) => console.log("Selected:", value)}
-            />
+
+            {/* GANTI DropdownInput dengan ini */}
+            <div className="account-search">
+              <label>To (Account Number)</label>
+              <div className="search-input-wrapper">
+                <input
+                  type="text"
+                  placeholder="Enter account number"
+                  value={accountNumber}
+                  onChange={(e) => setAccountNumber(e.target.value)}
+                />
+                <button onClick={handleSearch} className="search-button">
+                  <img src={searchIcon} alt="Search" />
+                </button>
+              </div>
+            </div>
+
+            {/* Komponen lain tetap */}
             <AmountInput
               label="Amount"
               value="IDR 150.000,00"
