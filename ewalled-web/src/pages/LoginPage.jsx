@@ -4,21 +4,50 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/LoginPage.css";
 import { useState } from "react";
 
+const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+// Simulasi user seperti di versi mobile
+const mockUsers = [
+  { email: "test@gmail.com", password: "Password123!" },
+  { email: "chelsea@gmail.com", password: "Password123!" },
+];
+
 function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  function handleLogin(e) {
+  const handleLogin = (e) => {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
 
-    if (email && password) {
-      console.log("Logging in:", email);
-      navigate("/");
-    } else {
-      alert("Mohon isi email dan password.");
+    if (!email || !password) {
+      if (!email) setEmailError("Mohon isi email.");
+      if (!password) setPasswordError("Mohon isi password.");
+      return;
     }
-  }
+
+    if (!isValidEmail(email)) {
+      setEmailError("Format email tidak valid.");
+      return;
+    }
+
+    const user = mockUsers.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (!user) {
+      setEmailError("Email atau password salah.");
+      setPasswordError("Email atau password salah.");
+      return;
+    }
+
+    // Jika berhasil login
+    navigate("/");
+  };
 
   return (
     <div className="login-container">
@@ -29,14 +58,25 @@ function LoginPage() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setEmailError("");
+            }}
+            className={emailError ? "input-error" : ""}
           />
+          {emailError && <p className="error-text">{emailError}</p>}
+
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordError("");
+            }}
+            className={passwordError ? "input-error" : ""}
           />
+          {passwordError && <p className="error-text">{passwordError}</p>}
 
           <button type="submit">Login</button>
         </form>
